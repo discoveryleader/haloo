@@ -1,0 +1,468 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Haloo — Product Requirements Document</title>
+<style>
+  :root {
+    --paper: #FBFAF7; --surface: #FFFFFF; --surface-2: #F4F3EF; --ink: #1B1E2E;
+    --ink-soft: #4A4F63; --muted: #797F94; --hairline: #E4E2DB;
+    --primary: #4656C6; --primary-deep: #2C3579; --primary-tint: #ECEEFB;
+    --accent: #E88A4E; --accent-tint: #FBEDE1;
+    --good: #2F9E6E; --good-tint: #E6F3EC; --warn: #C98A16; --warn-tint: #FaF0D8; --crit: #C7503F; --crit-tint: #F8E7E3;
+    --glow-a: rgba(70,86,198,0.30); --glow-b: rgba(232,138,78,0.20);
+    --shadow: 0 1px 2px rgba(27,30,46,0.04), 0 8px 28px rgba(27,30,46,0.06);
+    --serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: 'SF Mono', 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #12131C; --surface: #191B27; --surface-2: #1F2230; --ink: #ECEDF3;
+      --ink-soft: #B4B8C8; --muted: #838799; --hairline: #2A2D3C;
+      --primary: #8B97F0; --primary-deep: #A9B2F6; --primary-tint: #232741;
+      --accent: #EFA06B; --accent-tint: #2E2618;
+      --good: #4FC08B; --good-tint: #14271E; --warn: #E0AC46; --warn-tint: #2A2413; --crit: #E5786A; --crit-tint: #2E1A17;
+      --glow-a: rgba(139,151,240,0.24); --glow-b: rgba(239,160,107,0.16);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #FBFAF7; --surface: #FFFFFF; --surface-2: #F4F3EF; --ink: #1B1E2E;
+    --ink-soft: #4A4F63; --muted: #797F94; --hairline: #E4E2DB; --primary: #4656C6;
+    --primary-deep: #2C3579; --primary-tint: #ECEEFB; --accent: #E88A4E; --accent-tint: #FBEDE1;
+    --good: #2F9E6E; --good-tint: #E6F3EC; --warn: #C98A16; --warn-tint: #FAF0D8; --crit: #C7503F; --crit-tint: #F8E7E3;
+    --glow-a: rgba(70,86,198,0.30); --glow-b: rgba(232,138,78,0.20);
+    --shadow: 0 1px 2px rgba(27,30,46,0.04), 0 8px 28px rgba(27,30,46,0.06);
+  }
+  :root[data-theme="dark"] {
+    --paper: #12131C; --surface: #191B27; --surface-2: #1F2230; --ink: #ECEDF3;
+    --ink-soft: #B4B8C8; --muted: #838799; --hairline: #2A2D3C; --primary: #8B97F0;
+    --primary-deep: #A9B2F6; --primary-tint: #232741; --accent: #EFA06B; --accent-tint: #2E2618;
+    --good: #4FC08B; --good-tint: #14271E; --warn: #E0AC46; --warn-tint: #2A2413; --crit: #E5786A; --crit-tint: #2E1A17;
+    --glow-a: rgba(139,151,240,0.24); --glow-b: rgba(239,160,107,0.16);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans);
+    line-height: 1.62; font-size: 16.5px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* header */
+  .top { position: relative; padding: 76px 0 40px; overflow: hidden; }
+  .top::before { content: ""; position: absolute; top: -160px; left: 60%; transform: translateX(-50%);
+    width: 560px; height: 560px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 45%, var(--glow-a), transparent 62%),
+                radial-gradient(circle at 60% 55%, var(--glow-b), transparent 60%); z-index: 0; }
+  .top > * { position: relative; z-index: 1; }
+  .brandrow { display: flex; align-items: center; gap: 11px; margin-bottom: 26px; }
+  .halo-mark { width: 30px; height: 30px; flex: none; }
+  .brandname { font-family: var(--serif); font-weight: 600; font-size: 19px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--primary); margin: 0 0 16px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 5vw, 44px); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 18px; text-wrap: balance; }
+  .lede { font-size: 18.5px; color: var(--ink-soft); max-width: 640px; margin: 0; }
+
+  /* doc meta */
+  .metatable { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1px;
+    background: var(--hairline); border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden; margin-top: 30px; }
+  .metatable div { background: var(--surface); padding: 12px 15px; }
+  .metatable .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .metatable .v { font-size: 14px; color: var(--ink); font-weight: 550; margin-top: 3px; }
+
+  /* toc */
+  .toc { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; padding: 20px 24px; margin: 30px 0 8px; box-shadow: var(--shadow); }
+  .toc h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+  .toc ol { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 34px; }
+  .toc li { margin-bottom: 7px; font-size: 14.5px; counter-increment: toc; break-inside: avoid; }
+  .toc li::before { content: counter(toc, decimal-leading-zero); font-family: var(--mono); font-size: 11.5px; color: var(--accent); margin-right: 10px; }
+  .toc { counter-reset: toc; }
+  .toc a { color: var(--ink-soft); text-decoration: none; }
+  .toc a:hover { color: var(--primary); }
+
+  section { padding: 40px 0; border-top: 1px solid var(--hairline); }
+  .sec-head { display: flex; gap: 15px; align-items: baseline; margin-bottom: 22px; }
+  .sec-num { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(23px, 3.2vw, 29px); letter-spacing: -0.01em; margin: 0; line-height: 1.16; text-wrap: balance; }
+  h3 { font-family: var(--sans); font-weight: 650; font-size: 17px; margin: 28px 0 10px; letter-spacing: -0.005em; }
+  h4.mini { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
+  p { margin: 0 0 15px; }
+  strong { color: var(--ink); font-weight: 650; }
+  a { color: var(--primary); text-underline-offset: 2px; }
+  em { color: var(--ink-soft); }
+
+  ul.clean { margin: 0 0 15px; padding-left: 0; list-style: none; }
+  ul.clean li { position: relative; padding-left: 21px; margin-bottom: 8px; }
+  ul.clean li::before { content: ""; position: absolute; left: 4px; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* pills */
+  .pill { display: inline-block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 999px; font-weight: 600; white-space: nowrap; }
+  .p-p0 { background: var(--crit-tint); color: var(--crit); }
+  .p-p1 { background: var(--warn-tint); color: var(--warn); }
+  .p-p2 { background: var(--surface-2); color: var(--muted); }
+  .p-good { background: var(--good-tint); color: var(--good); }
+  .p-key { background: var(--primary-tint); color: var(--primary-deep); }
+
+  /* metric tiles */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 13px; margin: 6px 0; }
+  .kpi { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; padding: 17px 18px; box-shadow: var(--shadow); }
+  .kpi .n { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: -0.01em; line-height: 1; color: var(--primary); }
+  .kpi .n small { font-size: 14px; color: var(--muted); font-family: var(--sans); font-weight: 500; }
+  .kpi .l { font-size: 13px; color: var(--ink-soft); margin-top: 8px; line-height: 1.4; }
+
+  /* tables */
+  .twrap { overflow-x: auto; border: 1px solid var(--hairline); border-radius: 12px; box-shadow: var(--shadow); background: var(--surface); margin: 4px 0 8px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  thead th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface-2); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.id { font-family: var(--mono); font-size: 12.5px; color: var(--primary-deep); font-weight: 600; white-space: nowrap; }
+  td b { color: var(--ink); }
+
+  /* epic cards */
+  .epic { background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px; padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .epic .ehd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .epic h3 { margin: 0; font-size: 18px; }
+  .epic .why { font-size: 14px; color: var(--muted); margin: 2px 0 14px; }
+  .story { font-size: 14.5px; color: var(--ink-soft); border-left: 2px solid var(--primary); padding: 2px 0 2px 14px; margin: 0 0 12px; }
+  .story b { color: var(--ink); }
+  .ac { margin: 0; padding-left: 0; list-style: none; }
+  .ac li { position: relative; padding-left: 24px; margin-bottom: 6px; font-size: 13.5px; color: var(--ink-soft); }
+  .ac li::before { content: "✓"; position: absolute; left: 4px; top: 0; color: var(--good); font-weight: 700; font-size: 12px; }
+
+  .callout { background: var(--primary-tint); border: 1px solid var(--hairline); border-radius: 14px; padding: 22px 24px; margin: 8px 0; }
+  .callout .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); font-weight: 600; margin-bottom: 8px; }
+  .callout p { font-family: var(--serif); font-size: 19px; line-height: 1.45; color: var(--ink); margin: 0; }
+
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 620px){ .cols2 { grid-template-columns: 1fr; } .toc ol { columns: 1; } }
+  .panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); }
+  .panel h4 { margin: 0 0 10px; font-size: 15px; }
+
+  footer { border-top: 1px solid var(--hairline); padding: 32px 0 60px; color: var(--muted); font-size: 13px; }
+  footer a { color: var(--muted); }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brandrow">
+      <svg class="halo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <ellipse cx="20" cy="11" rx="13" ry="4.4" stroke="var(--accent)" stroke-width="2.4"/>
+        <circle cx="20" cy="24" r="9.5" fill="var(--primary)"/>
+        <circle cx="16.5" cy="22.5" r="1.7" fill="var(--surface)"/>
+        <circle cx="23.5" cy="22.5" r="1.7" fill="var(--surface)"/>
+        <path d="M16 27.5c1.4 1.6 6.6 1.6 8 0" stroke="var(--surface)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="brandname">Haloo</span>
+    </div>
+    <p class="eyebrow">Product Requirements Document · v0.1 Draft</p>
+    <h1>Haloo — a guardian that grows with the child</h1>
+    <p class="lede">A family digital-wellbeing product that shifts from protection toward self-regulation as a child matures — earning trust instead of demanding it. This PRD translates the market strategy into a buildable v1.</p>
+
+    <div class="metatable">
+      <div><div class="k">Product</div><div class="v">Haloo (working name)</div></div>
+      <div><div class="k">Doc status</div><div class="v">Draft for review</div></div>
+      <div><div class="k">Version</div><div class="v">0.1</div></div>
+      <div><div class="k">Last updated</div><div class="v">July 2026</div></div>
+      <div><div class="k">Owner</div><div class="v">Product (TBD)</div></div>
+      <div><div class="k">Source</div><div class="v">Haloo Market Report</div></div>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#s1">Summary &amp; problem</a></li>
+      <li><a href="#s2">Goals &amp; non-goals</a></li>
+      <li><a href="#s3">Success metrics</a></li>
+      <li><a href="#s4">Users &amp; personas</a></li>
+      <li><a href="#s5">Product principles</a></li>
+      <li><a href="#s6">The age-mode framework</a></li>
+      <li><a href="#s7">Scope &amp; feature epics</a></li>
+      <li><a href="#s8">Detailed requirements</a></li>
+      <li><a href="#s9">Privacy, security &amp; compliance</a></li>
+      <li><a href="#s10">Pricing &amp; packaging</a></li>
+      <li><a href="#s11">Release plan</a></li>
+      <li><a href="#s12">Risks &amp; open questions</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Summary &amp; problem</h2></div>
+    <p>The parental-control market is growing (~$1.76B in 2026, projected ~$4.12B by 2034) but is dominated by aging, surveillance-first products. Their core model is failing: tech-savvy teens bypass controls, monitoring doesn't reliably change behavior (per Meta's own research), and heavy surveillance erodes the parent–child trust it depends on. Meanwhile only <strong>~11%</strong> of features across leading apps support teen <em>self-regulation</em> — the entire category is built for the parent, not the child.</p>
+    <div class="callout">
+      <div class="k">The opportunity</div>
+      <p>Build a guardian teens don't want to defeat — one that grows from protection toward self-regulation as the child matures, treats the teen as a first-class user, and covers the risks incumbents miss (starting with AI companions).</p>
+    </div>
+    <h4 class="mini">Problems we are solving</h4>
+    <div class="twrap"><table>
+      <thead><tr><th>#</th><th>Problem</th><th>Who feels it</th></tr></thead>
+      <tbody>
+        <tr><td class="id">PB-1</td><td><b>Circumvention.</b> Filters fall to VPNs, resets, and second accounts; apps break when kids push back.</td><td>Parent</td></tr>
+        <tr><td class="id">PB-2</td><td><b>Low efficacy.</b> Monitoring alone doesn't build healthier habits or reduce compulsive use.</td><td>Parent &amp; teen</td></tr>
+        <tr><td class="id">PB-3</td><td><b>Trust erosion.</b> Surveillance pushes teens to hidden devices; family conflict rises.</td><td>Teen</td></tr>
+        <tr><td class="id">PB-4</td><td><b>Alert noise.</b> Keyword filters over-trigger; real danger gets buried; parents tune out.</td><td>Parent</td></tr>
+        <tr><td class="id">PB-5</td><td><b>Blind spots.</b> No first-class coverage of teen–AI chatbots or modern surfaces.</td><td>Parent &amp; teen</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Goals &amp; non-goals</h2></div>
+    <div class="cols2">
+      <div class="panel">
+        <h4>Goals (v1)</h4>
+        <ul class="clean">
+          <li>Deliver trustworthy, low-noise safety alerts parents act on</li>
+          <li>Ship the <strong>Protect / Guide / Coach</strong> age-mode framework</li>
+          <li>Give teens a genuine self-regulation surface of their own</li>
+          <li>Provide age-appropriate guardrails for AI-companion use</li>
+          <li>Acquire via a useful free tier; convert to one simple family plan</li>
+          <li>Privacy-by-design and transparency as default, not add-ons</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h4>Non-goals (v1)</h4>
+        <ul class="clean">
+          <li>Full covert surveillance / stealth monitoring</li>
+          <li>Adult-security bundle (identity theft, data removal)</li>
+          <li>Clinical diagnosis or treatment of mental-health conditions</li>
+          <li>Console &amp; smart-TV coverage (deferred to v3)</li>
+          <li>Enterprise / school-district administration</li>
+          <li>Guaranteeing 100% un-bypassable restriction (impossible; we design for it instead)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Success metrics</h2></div>
+    <div class="callout" style="margin-bottom:18px">
+      <div class="k">North Star</div>
+      <p>Weekly active <em>families</em> where both a parent and a child engage — the signal that Haloo is a shared tool, not a one-sided watchdog.</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="n">≥ 40<small>%</small></div><div class="l">Teen weekly engagement (of managed teens)</div></div>
+      <div class="kpi"><div class="n">&lt; 15<small>%</small></div><div class="l">Alert false-positive rate (P0 target)</div></div>
+      <div class="kpi"><div class="n">≥ 55<small>%</small></div><div class="l">Free → paid conversion intent at onboarding</div></div>
+      <div class="kpi"><div class="n">&lt; 5<small>%</small></div><div class="l">30-day uninstall / circumvention rate</div></div>
+    </div>
+    <h4 class="mini">Metric definitions</h4>
+    <ul class="clean">
+      <li><strong>Teen engagement</strong> — a managed child (13+) opens their own view and interacts with a self-regulation feature ≥ 1×/week.</li>
+      <li><strong>Alert precision</strong> — share of high-severity alerts a parent marks "useful / accurate" vs "not relevant."</li>
+      <li><strong>Trust proxy</strong> — % of teen accounts that keep transparency mode on (vs attempts to disable/hide).</li>
+      <li><strong>Activation</strong> — a family completes setup for ≥ 1 child device and receives ≥ 1 weekly summary.</li>
+    </ul>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Users &amp; personas</h2></div>
+    <div class="twrap"><table>
+      <thead><tr><th>Persona</th><th>Context</th><th>Primary need</th><th>Success looks like</th></tr></thead>
+      <tbody>
+        <tr><td><b>Maya — the parent</b><br><span style="color:var(--muted)">38, two kids (9 &amp; 14)</span></td><td>Time-poor, anxious about what she can't see, distrusts creepy apps.</td><td>Peace of mind without spying; alerts she can trust.</td><td>Fewer, higher-quality alerts; calmer conversations at home.</td></tr>
+        <tr><td><b>Leo — the teen</b><br><span style="color:var(--muted)">14, wants autonomy</span></td><td>Resents surveillance; knows how to bypass basic controls.</td><td>Respect, privacy, and control over his own habits.</td><td>Sets his own limits; keeps the app instead of jailbreaking it.</td></tr>
+        <tr><td><b>Ada — the child</b><br><span style="color:var(--muted)">9, first device</span></td><td>New to devices; needs strong, simple guardrails.</td><td>Safe defaults, age-appropriate content.</td><td>Filtering &amp; limits "just work"; minimal friction for parent.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Product principles</h2></div>
+    <ul class="clean">
+      <li><strong>Trust over surveillance.</strong> Default to consent and transparency; the teen can see what's shared. "Nothing hidden, from anyone."</li>
+      <li><strong>Grow, don't police.</strong> The product's job is to work itself out of a job — moving control to the child over time.</li>
+      <li><strong>Signal over noise.</strong> One accurate alert beats ten anxious ones. Precision is the moat.</li>
+      <li><strong>Design for the platform's reality.</strong> Work with iOS constraints (on-device, consent-based), don't fight them.</li>
+      <li><strong>Outcomes over screen time.</strong> We optimize for wellbeing and healthy habits, not raw minutes blocked.</li>
+    </ul>
+  </section>
+
+  <!-- 6 -->
+  <section id="s6">
+    <div class="sec-head"><span class="sec-num">06</span><h2>The age-mode framework</h2></div>
+    <p>Haloo's central differentiator. A child's account occupies one mode; a parent can advance it (with the teen's visibility) as trust and age grow. Mode changes what the product does <em>and</em> who holds the controls.</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Mode</th><th>Age (typical)</th><th>Control sits with</th><th>What it emphasizes</th></tr></thead>
+      <tbody>
+        <tr><td><b>Protect</b></td><td>~6–10</td><td>Parent</td><td>Strong filtering, tight time limits, safe defaults, minimal teen UI.</td></tr>
+        <tr><td><b>Guide</b></td><td>~11–13</td><td>Shared</td><td>Shared visibility, negotiated limits, first self-set goals, gentle nudges.</td></tr>
+        <tr><td><b>Coach</b></td><td>~14+</td><td>Teen-led, parent safety-net</td><td>Teen sets own limits &amp; goals; parent sees only high-severity safety signals.</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted); font-size:14px; margin-top:14px">Mode transitions are a designed moment — a shared "graduation" that reduces surveillance as a reward for trust, directly countering the circumvention and trust problems (PB-1, PB-3).</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="s7">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Scope &amp; feature epics</h2></div>
+    <p>Six epics. Priority: <span class="pill p-p0">P0</span> ship for v1 MVP · <span class="pill p-p1">P1</span> fast-follow · <span class="pill p-p2">P2</span> later.</p>
+    <div class="twrap"><table>
+      <thead><tr><th>Epic</th><th>What it is</th><th>Solves</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="id">E1</td><td><b>Core controls</b> — time &amp; app limits, web/content filtering, cross-platform setup.</td><td>PB-1</td><td><span class="pill p-p0">P0</span></td></tr>
+        <tr><td class="id">E2</td><td><b>Trustworthy alert engine</b> — context-aware, low-false-positive safety alerts (text + image).</td><td>PB-4</td><td><span class="pill p-p0">P0</span></td></tr>
+        <tr><td class="id">E3</td><td><b>Age-mode framework</b> — Protect / Guide / Coach with transition flow.</td><td>PB-1, PB-3</td><td><span class="pill p-p0">P0</span></td></tr>
+        <tr><td class="id">E4</td><td><b>Teen self-regulation</b> — teen dashboard, self-set limits, mood check-ins, help pathways.</td><td>PB-2, PB-3</td><td><span class="pill p-p1">P1</span></td></tr>
+        <tr><td class="id">E5</td><td><b>AI-companion guardrails</b> — monitor &amp; age-gate teen–AI chatbot use.</td><td>PB-5</td><td><span class="pill p-p1">P1</span></td></tr>
+        <tr><td class="id">E6</td><td><b>Wellbeing insights</b> — weekly balance summary + guided family conversations.</td><td>PB-2</td><td><span class="pill p-p2">P2</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 8 -->
+  <section id="s8">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Detailed requirements</h2></div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E1 · Core controls</h3><span class="pill p-p0">P0</span></div>
+      <p class="why">The credible baseline every competitor has; table stakes to be considered at all.</p>
+      <p class="story"><b>As a parent,</b> I want to set screen-time schedules, per-app limits, and content filtering across my child's devices, so basic safety and balance work without constant policing.</p>
+      <h4 class="mini">Acceptance criteria</h4>
+      <ul class="ac">
+        <li>Parent can set daily time budgets and downtime windows per child and per app.</li>
+        <li>Web/content filtering with age-tiered defaults (Protect auto-applies the strictest tier).</li>
+        <li>Setup works on iOS and Android; cross-device limits tied to the child's Haloo account.</li>
+        <li>On tamper (uninstall attempt, profile removal), parent is notified and device re-locks per policy.</li>
+        <li>Free tier covers ≥ 1 child device with core limits + filtering.</li>
+      </ul>
+    </div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E2 · Trustworthy alert engine</h3><span class="pill p-p0">P0</span><span class="pill p-key">the moat</span></div>
+      <p class="why">Precision is the defensible differentiator vs Bark-style alert volume.</p>
+      <p class="story"><b>As a parent,</b> I want alerts only when something genuinely matters, with enough context to act, so I trust the app instead of muting it.</p>
+      <h4 class="mini">Acceptance criteria</h4>
+      <ul class="ac">
+        <li>Alerts classify severity into tiers (info / concern / urgent); urgent (e.g. self-harm, predatory contact) never suppressed.</li>
+        <li>Analysis covers text <em>and</em> images; multilingual support for the top launch locales.</li>
+        <li>Each alert includes context (what, where, why flagged) and a suggested next step — never raw dumps.</li>
+        <li>Measured false-positive rate &lt; 15% on the evaluation set before GA.</li>
+        <li>Parent feedback ("useful / not relevant") feeds back into tuning.</li>
+      </ul>
+    </div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E3 · Age-mode framework</h3><span class="pill p-p0">P0</span></div>
+      <p class="why">The product's identity; converts "one mode for all ages" incumbents into legacy.</p>
+      <p class="story"><b>As a family,</b> we want the app to shift control toward the child as they grow, so supervision eases as a reward for trust rather than a fixed regime.</p>
+      <ul class="ac">
+        <li>Each child account is in exactly one mode: Protect, Guide, or Coach.</li>
+        <li>Mode sets defaults for control ownership, alert sharing, and teen-UI visibility (per §06 table).</li>
+        <li>Advancing a mode is a shared, visible action; the teen is notified what changes about their privacy.</li>
+        <li>In Coach mode, the parent receives only urgent-tier safety alerts by default.</li>
+      </ul>
+    </div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E4 · Teen self-regulation</h3><span class="pill p-p1">P1</span><span class="pill p-key">whitespace</span></div>
+      <p class="why">Closes the 89/11 gap; the reason a teen keeps the app instead of bypassing it.</p>
+      <p class="story"><b>As a teen,</b> I want my own view where I set my limits, see my patterns, and get help privately, so the app respects me as its user too.</p>
+      <ul class="ac">
+        <li>Teen has a dedicated dashboard: their screen-time insights, self-set app limits, and streaks/goals.</li>
+        <li>Optional lightweight mood check-ins (non-clinical) visible to the teen; sharing with parent is teen-controlled in Coach mode.</li>
+        <li>Always-available, private path to vetted help resources (e.g. crisis lines) — reachable without parent visibility.</li>
+        <li>Self-set limits are honored the same as parent-set ones; teen sees exactly what parent can and can't view.</li>
+      </ul>
+    </div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E5 · AI-companion guardrails</h3><span class="pill p-p1">P1</span><span class="pill p-key">first-mover</span></div>
+      <p class="why">2026's fastest-moving risk and incumbents' clearest blind spot.</p>
+      <p class="story"><b>As a parent,</b> I want to know if my child is forming intense relationships with AI chatbots and set age-appropriate limits, because this is invisible to today's tools.</p>
+      <ul class="ac">
+        <li>Detect use of AI-companion apps/surfaces; surface usage patterns (frequency, time-of-day, escalation).</li>
+        <li>Age-gate or limit AI-companion access per mode; urgent-tier alert on high-risk content (self-harm, grooming-like patterns).</li>
+        <li>Guardrails degrade gracefully where platform APIs limit visibility; be transparent about coverage gaps.</li>
+      </ul>
+    </div>
+
+    <div class="epic">
+      <div class="ehd"><h3>E6 · Wellbeing insights</h3><span class="pill p-p2">P2</span></div>
+      <p class="why">Anchors the brand on outcomes, not minutes blocked; supports premium tier.</p>
+      <p class="story"><b>As a family,</b> we want a weekly "balance summary" and prompts for good conversations, so the app helps us talk rather than surveil.</p>
+      <ul class="ac">
+        <li>Weekly balance summary per child (trends, not raw logs), framed around wellbeing.</li>
+        <li>Conversation prompts tied to what changed that week; never diagnostic language.</li>
+        <li>Insights are shareable within the family, never sold or used for ads.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="s9">
+    <div class="sec-head"><span class="sec-num">09</span><h2>Privacy, security &amp; compliance</h2></div>
+    <p>Non-negotiable — one incident is fatal in this category. Treated as product requirements, not legal boilerplate.</p>
+    <ul class="clean">
+      <li><strong>Privacy-by-design.</strong> Prefer on-device analysis; minimize what leaves the device; no selling or ad-targeting of family data.</li>
+      <li><strong>Transparency mode.</strong> The teen can always see what is monitored and shared; hidden/stealth monitoring is out of scope.</li>
+      <li><strong>Regulatory fit.</strong> COPPA (under-13), and the 2024–2026 child-safety wave (age verification, minors' privacy, design mandates); GDPR-K where applicable.</li>
+      <li><strong>Security.</strong> Encryption in transit &amp; at rest; third-party audit before GA; strict access controls on sensitive signals.</li>
+      <li><strong>Safety escalation.</strong> Clear, documented handling for urgent-tier signals; non-diagnostic framing; real professional resources, not in-house clinical claims.</li>
+    </ul>
+  </section>
+
+  <!-- 10 -->
+  <section id="s10">
+    <div class="sec-head"><span class="sec-num">10</span><h2>Pricing &amp; packaging</h2></div>
+    <div class="twrap"><table>
+      <thead><tr><th>Tier</th><th>Who</th><th>Includes</th><th>Price target</th></tr></thead>
+      <tbody>
+        <tr><td><b>Free</b></td><td>Acquisition wedge</td><td>Core limits + filtering, 1 child device, basic weekly summary.</td><td>$0</td></tr>
+        <tr><td><b>Haloo Family</b></td><td>The default</td><td>Everything: all epics, unlimited kids, full alert engine, age modes, teen app.</td><td>≤ $14 / mo (beat Bark's flat family rate)</td></tr>
+        <tr><td><b>Wellbeing add-on</b></td><td>Premium</td><td>Deep wellbeing insights, guided conversations, priority support.</td><td>Add-on, not a bundle</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted); font-size:14px; margin-top:12px">Simple per-family pricing (not per-device like Qustodio, not a heavy adult-security bundle like Aura). Free tier drives acquisition; one clear upgrade.</p>
+  </section>
+
+  <!-- 11 -->
+  <section id="s11">
+    <div class="sec-head"><span class="sec-num">11</span><h2>Release plan</h2></div>
+    <div class="twrap"><table>
+      <thead><tr><th>Phase</th><th>Theme</th><th>Ships</th><th>Exit criteria</th></tr></thead>
+      <tbody>
+        <tr><td><b>v1 · MVP</b></td><td>Earn the baseline</td><td>E1, E2, E3 + free tier</td><td>Alert FP &lt; 15%; activation flow &lt; 10 min; iOS + Android parity on core.</td></tr>
+        <tr><td><b>v2 · Differentiate</b></td><td>Build what others don't</td><td>E4, E5 + transparency mode, multilingual alerts</td><td>Teen weekly engagement ≥ 40%; AI-companion detection live.</td></tr>
+        <tr><td><b>v3 · Deepen</b></td><td>Become the family OS</td><td>E6 + console/smart-device coverage, privacy certification</td><td>Wellbeing add-on attach rate hits target; audit passed.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 12 -->
+  <section id="s12">
+    <div class="sec-head"><span class="sec-num">12</span><h2>Risks &amp; open questions</h2></div>
+    <div class="cols2">
+      <div class="panel">
+        <h4>Key risks</h4>
+        <ul class="clean">
+          <li><strong>Platform dependency.</strong> Apple/Google tighten APIs or ship free equivalents → own the collaborative/wellbeing layer they won't.</li>
+          <li><strong>Trust incident.</strong> A leak is existential → privacy-by-design + external audit pre-GA.</li>
+          <li><strong>Efficacy scrutiny.</strong> "Control" branding ages badly → anchor on wellbeing outcomes.</li>
+          <li><strong>Clinical liability.</strong> Mood features invite exposure → non-diagnostic, professional-backed.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h4>Open questions</h4>
+        <ul class="clean">
+          <li>Final product name (Haloo working name; alternatives under review).</li>
+          <li>Exact false-positive threshold &amp; eval dataset for GA.</li>
+          <li>How much on-device vs cloud analysis, given iOS limits &amp; cost?</li>
+          <li>Which launch locales for multilingual alerts?</li>
+          <li>Mode age bands — fixed defaults or fully parent-configurable?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Haloo — Product Requirements Document</strong> · v0.1 draft · July 2026. Derived from the Haloo Parental Control Market Report. Market-sizing, pricing, and competitive figures are directional — validate before committing scope. Product name and all targets are provisional.</p>
+  </footer>
+
+</div>
+
+</body></html>
