@@ -2,39 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Haloo parent dashboard</title>
+<title>Haloo Dashboard</title>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800;900&family=Geist:wght@400;500;700&family=Geist+Mono:wght@700&display=swap">
 <style>
-body{margin:0}
-button{font:inherit;cursor:pointer}
+body{margin:0;background:#0B0F19}
+button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
 .scroll{scrollbar-width:none}
 .scroll::-webkit-scrollbar{display:none}
+.btn-sec:hover,.att:hover{border-color:#3B82F6 !important}
+.btn-extend:hover{filter:brightness(1.08)}
+.btn-extend:focus-visible{outline:2px solid #F8FAFC}
+.btn-main:active,.btn-sec:active,.btn-extend:active,.chip:active,.att:active{transform:scale(.98)}
+.toast{animation:toast-in .2s ease}
+.scrim{animation:fade .2s ease}
+.sheet{animation:rise .25s ease;scrollbar-width:none}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.toast,.scrim,.sheet{animation:none}.btn-main:active,.btn-sec:active,.chip:active,.att:active{transform:none}}
 </style>
 </helmet>
-<div style="width: 402px; height: 874px; box-sizing: border-box; background: #0B0F19; color: #F8FAFC; font-family: 'Geist', system-ui, sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden">
+<div style="position: relative; width: 402px; height: 874px; box-sizing: border-box; background: #0B0F19; color: #F8FAFC; font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden">
 
 <div class="scroll" style="flex-grow: 1; min-height: 0; overflow-y: auto">
-<div style="padding: 48px 16px 12px; display: flex; flex-direction: column; gap: 24px">
+<div style="padding: 44px 16px 12px; display: flex; flex-direction: column; gap: 24px">
 
 <div>
-<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Tuesday, Jul 28</div>
-<h1 style="margin: 8px 0 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.25">Good morning, Maya</h1>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #64748B">Tuesday, Jul 28</div>
+<h1 style="margin: 8px 0 0; font-family: 'Unbounded', 'Geist', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.25">Good morning, Maya</h1>
 </div>
 
 <div style="display: flex; gap: 10px">
 <sc-for list="{{chips}}" as="c" hint-placeholder-count="3">
-<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.selected }}" style="flex-grow: 1; flex-basis: 0; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 12px 10px; border-radius: 12px; background: #1E294B; color: inherit; text-align: left; border: {{ c.border }}">
-<span style="width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: {{ c.color }}; color: #0B0F19; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 12px">{{ c.initial }}</span>
-<span style="min-width: 0; display: flex; flex-direction: column; gap: 2px">
-<span style="font-weight: 700; font-size: 13px; white-space: nowrap; color: {{ c.nameColor }}">{{ c.label }}</span>
-<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 1px; color: {{ c.modeColor }}">{{ c.mode }}</span>
+<button type="button" class="chip" onClick="{{ c.pick }}" aria-pressed="{{ c.pressed }}" style="flex: 1 1 0%; min-width: 0; display: flex; align-items: center; gap: 10px; padding: {{ c.pad }}; border-radius: 12px; background: #1E294B; border: {{ c.border }}; text-align: left">
+<span style="width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0; display: grid; place-items: center; color: #0B0F19; background: {{ c.avatar }}; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 12px">{{ c.initial }}</span>
+<span style="min-width: 0">
+<span style="display: block; font-weight: 700; font-size: 13px; white-space: nowrap; color: {{ c.nameColor }}">{{ c.label }}</span>
+<span style="display: block; font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; margin-top: 2px; color: {{ c.modeColor }}">{{ c.mode }}</span>
 </span>
 </button>
 </sc-for>
@@ -42,114 +54,223 @@ button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
 
 <div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
-<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Screen time status</span>
-<span style="padding: 6px 10px; border-radius: 10px; border: 1px solid {{ kid.color }}; color: {{ kid.color }}; background: {{ kid.tint }}; font-weight: 700; font-size: 11px; white-space: nowrap">{{ kid.badge }}</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #64748B">Screen time status</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 10px; border: 1px solid currentColor; font-weight: 700; font-size: 12px; white-space: nowrap; color: {{ kid.color }}; background: {{ kid.tint }}">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ kid.icon }}"></path></svg>{{ kid.badge }}</span>
 </div>
 
 <div style="display: flex; align-items: center; gap: 20px">
 <div style="position: relative; width: 128px; height: 128px; flex-shrink: 0">
-<svg width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="{{ kid.ringLabel }}">
-<circle cx="64" cy="64" r="55" stroke="#0B0F19" stroke-width="10" fill="none"/>
-<circle cx="64" cy="64" r="55" stroke="{{ kid.ringColor }}" stroke-width="10" fill="none" stroke-dasharray="345.6" stroke-dashoffset="{{ kid.dashOffset }}" stroke-linecap="round" transform="rotate(-90 64 64)"/>
+<svg width="128" height="128" viewBox="0 0 128 128" style="display: block" role="img" aria-label="{{ kid.ringLabel }}">
+<circle cx="64" cy="64" r="55" stroke="#0B0F19" stroke-width="10" fill="none"></circle>
+<circle cx="64" cy="64" r="55" stroke="{{ kid.ringColor }}" stroke-width="10" fill="none" stroke-dasharray="345.6" stroke-dashoffset="{{ kid.dashOffset }}" stroke-linecap="round" transform="rotate(-90 64 64)"></circle>
 </svg>
 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
-<span style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 20px">{{ kid.usedText }}</span>
-<span style="font-size: 12px; color: #8A98AE; margin-top: 4px">of {{ kid.goalText }}</span>
+<b style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 20px">{{ kid.usedText }}</b>
+<span style="font-size: 12px; color: #64748B; margin-top: 4px">of {{ kid.goalText }}</span>
 </div>
 </div>
-<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="flex: 1 1 0%; min-width: 0; display: flex; flex-direction: column; gap: 16px">
 <div>
-<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #8A98AE">{{ kid.s1k }}</div>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase">{{ kid.s1k }}</div>
 <div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 16px; margin-top: 4px; color: {{ kid.s1color }}">{{ kid.s1v }}</div>
 </div>
 <div>
-<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #8A98AE">{{ kid.s2k }}</div>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase">{{ kid.s2k }}</div>
 <div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 16px; margin-top: 4px">{{ kid.s2v }}</div>
 </div>
 </div>
 </div>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.5; color: #8A98AE">{{ kid.note }}</p>
+<p style="font-size: 12px; line-height: 1.5; color: #64748B; margin: 0">{{ kid.note }}</p>
 
 <sc-if value="{{ kid.paused }}" hint-placeholder-val="{{ false }}">
-<div role="status" style="padding: 10px 12px; border-radius: 10px; background: rgba(244,63,94,.2); border: 1px solid #F43F5E; color: #FDA4AF; font-weight: 700; font-size: 13px; line-height: 1.35">Devices paused. {{ kid.name }} can see this on screen</div>
+<div role="status" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: rgba(244,63,94,.2); border: 1px solid #F43F5E; color: #F43F5E; font-weight: 700; font-size: 13px; line-height: 1.35">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.pause }}"></path></svg>
+<span>Devices paused. {{ kid.name }} can see this on screen</span>
+</div>
 </sc-if>
 
-<button type="button" onClick="{{ extend }}" style="width: 100%; height: 56px; border-radius: 12px; border: 0; background: #10B981; color: #0B0F19; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 1px; text-transform: uppercase">Extend time +30m</button>
+<button type="button" class="btn-extend" onClick="{{ extend }}" style="width: 100%; height: 56px; border-radius: 12px; border: 0; background: #10B981; color: #0B0F19; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 1px; text-transform: uppercase">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.clockPlus }}"></path></svg>Extend time +30m</button>
 
-<button type="button" onClick="{{ togglePause }}" style="width: 100%; height: 48px; border-radius: 12px; border: 1.5px solid #F43F5E; background: {{ kid.pauseBg }}; color: {{ kid.pauseFg }}; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 1px">{{ kid.pauseLabel }}</button>
+<div style="display: flex; gap: 10px">
+<button type="button" class="btn-main" onClick="{{ togglePause }}" style="flex: {{ kid.pauseFlex }}; height: 48px; padding: 0 16px 0 14px; border-radius: 12px; border: 1.5px solid #F43F5E; background: {{ kid.pauseBg }}; color: {{ kid.pauseFg }}; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 1px; white-space: nowrap">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ kid.pauseIcon }}"></path></svg>{{ kid.pauseLabel }}</button>
+<button type="button" class="btn-sec" onClick="{{ secondary }}" style="display: {{ kid.secDisplay }}; flex: 1 1 0%; min-width: 0; height: 48px; border-radius: 8px; border: 1px solid #1E294B; background: #1E294B; color: #F8FAFC; font-weight: 700; font-size: 14px">{{ kid.secondary }}</button>
+</div>
 
-<p style="margin: 0; font-size: 12px; line-height: 1.5; color: #8A98AE">{{ kid.control }}</p>
+<p style="font-size: 12px; line-height: 1.5; color: #64748B; margin: 0">{{ kid.control }}</p>
 </div>
 
 <div style="display: flex; gap: 10px">
-<div style="flex-grow: 1; flex-basis: 0; min-width: 0; background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
-<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Today</div>
+<div style="flex: 1 1 0%; min-width: 0; padding: 16px; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase">Today</div>
 <div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 22px; margin-top: 8px; white-space: nowrap">{{ kid.usedText }}</div>
 <div style="font-size: 12px; font-weight: 700; margin-top: 4px; line-height: 1.4; color: {{ kid.dayColor }}">{{ kid.day }}</div>
 </div>
-<div style="flex-grow: 1; flex-basis: 0; min-width: 0; background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
-<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">This week</div>
+<div style="flex: 1 1 0%; min-width: 0; padding: 16px; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase">This week</div>
 <div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 22px; margin-top: 8px; white-space: nowrap">{{ kid.weekText }}</div>
 <div style="font-size: 12px; font-weight: 700; margin-top: 4px; line-height: 1.4; color: {{ kid.weekColor }}">{{ kid.weekDelta }}</div>
 </div>
 </div>
 
-<div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
+<div style="display: flex; gap: 10px">
+<sc-for list="{{kid.devices}}" as="d" hint-placeholder-count="1">
+<div style="flex: 1 1 0%; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 16px; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
+<span style="width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: #1E294B; color: #64748B">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ d.icon }}"></path></svg></span>
+<div style="min-width: 0; flex: 1 1 0%">
+<b style="display: block; font-size: 13px; font-weight: 700">{{ d.name }}</b>
+<span style="display: block; font-size: 12px; color: #64748B; margin-top: 2px; line-height: 1.4">{{ d.line }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="padding: 16px; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
-<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Today's timeline</span>
-<span style="font-size: 12px; color: #8A98AE">screen use by hour</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #64748B">Today's timeline</span>
+<span style="font-size: 12px; color: #64748B">screen use by hour</span>
 </div>
 <div style="display: flex; gap: 3px; margin-top: 12px; height: 34px; align-items: flex-end">
 <sc-for list="{{kid.bars}}" as="b" hint-placeholder-count="15">
-<div style="flex-grow: 1; flex-basis: 0; border-radius: 3px; background: #3B82F6; height: {{ b.h }}; opacity: {{ b.o }}"></div>
+<i style="flex: 1 1 0%; display: block; border-radius: 3px; background: #3B82F6; height: {{ b.h }}; opacity: {{ b.o }}"></i>
 </sc-for>
 </div>
-<div style="display: flex; justify-content: space-between; font-size: 11px; color: #8A98AE; margin-top: 8px"><span>7 AM</span><span>12 PM</span><span>4 PM</span><span>9 PM</span></div>
+<div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748B; margin-top: 8px"><span>7 AM</span><span>12 PM</span><span>4 PM</span><span>9 PM</span></div>
 </div>
 
 <section style="display: flex; flex-direction: column; gap: 12px">
-<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">{{ kid.attTitle }}</h2>
-<sc-for list="{{kid.items}}" as="it" hint-placeholder-count="1">
-<a href="Alert.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1E294B; border: 1px solid #1E294B; border-radius: 16px; text-decoration: none; color: inherit">
-<span style="width: 10px; height: 10px; border-radius: 999px; flex-shrink: 0; background: {{ it.color }}"></span>
-<span style="min-width: 0; flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
-<span style="font-weight: 700; font-size: 14px; line-height: 1.35">{{ it.title }}</span>
-<span style="font-size: 12px; color: #8A98AE">{{ it.sub }}</span>
-</span>
-<span style="color: #8A98AE; font-size: 16px" aria-hidden="true">›</span>
-</a>
-</sc-for>
-</section>
-
-<section style="display: flex; flex-direction: column; gap: 12px">
-<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">Top App Usage</h2>
-<div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 4px 16px">
-<sc-for list="{{kid.apps}}" as="a" hint-placeholder-count="3">
-<div style="padding: 14px 0; border-bottom: 1px solid #1E294B">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
-<span style="font-weight: 700; font-size: 14px">{{ a.name }}</span>
-<span style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 13px">{{ a.time }}</span>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">{{ kid.attTitle }}</h2>
+<button type="button" onClick="{{ viewAll }}" style="background: none; border: 0; padding: 0; color: #3B82F6; font-weight: 700; font-size: 13px">View all</button>
 </div>
-<div style="font-size: 12px; color: #8A98AE; margin-top: 2px">{{ a.meta }}</div>
-<div style="height: 6px; border-radius: 999px; background: #1E294B; margin-top: 8px; overflow: hidden"><div style="height: 100%; border-radius: 999px; background: #3B82F6; width: {{ a.pct }}"></div></div>
+<sc-for list="{{kid.items}}" as="it" hint-placeholder-count="1">
+<sc-if value="{{ it.open }}" hint-placeholder-val="{{ true }}">
+<button type="button" class="att" onClick="{{ it.openSheet }}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px; text-align: left; background: #1E294B; border: 1px solid #1E294B; border-radius: 16px">
+<span style="width: 32px; height: 32px; border-radius: 999px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid currentColor; color: {{ it.color }}; background: {{ it.tint }}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ it.icon }}"></path></svg></span>
+<span style="flex: 1 1 0%; min-width: 0">
+<b style="display: block; font-size: 14px; font-weight: 700; line-height: 1.35">{{ it.title }}</b>
+<span style="display: block; font-size: 12px; color: #64748B; margin-top: 2px">{{ it.sub }}</span>
+</span>
+<span style="color: #64748B; display: flex">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.chevron }}"></path></svg></span>
+</button>
+</sc-if>
+<sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 12px; padding: 16px; font-size: 13px; font-weight: 500; color: #64748B; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
+<span style="width: 32px; height: 32px; border-radius: 999px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid currentColor; color: #10B981; background: rgba(16,185,129,.2)">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.check }}"></path></svg></span>
+<span>{{ it.doneText }}</span>
+</div>
+</sc-if>
+</sc-for>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">Top App Usage</h2>
+<button type="button" onClick="{{ weekly }}" style="background: none; border: 0; padding: 0; color: #3B82F6; font-weight: 700; font-size: 13px">Weekly summary</button>
+</div>
+<div style="padding: 8px 16px; background: #161D30; border: 1px solid #1E294B; border-radius: 16px">
+<sc-for list="{{kid.apps}}" as="a" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: {{ a.border }}">
+<span style="width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; background: #1E294B; color: #64748B">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ a.icon }}"></path></svg></span>
+<div style="flex: 1 1 0%; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<b style="font-size: 14px; font-weight: 700">{{ a.name }}</b>
+<i style="font-style: normal; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 13px">{{ a.time }}</i>
+</div>
+<small style="display: block; font-size: 12px; color: #64748B; margin-top: 2px">{{ a.meta }}</small>
+<div style="height: 6px; border-radius: 999px; background: #1E294B; margin-top: 8px; overflow: hidden"><span style="display: block; height: 100%; border-radius: 999px; background: #3B82F6; width: {{ a.pct }}"></span></div>
+</div>
 </div>
 </sc-for>
 </div>
 </section>
 
-<div style="text-align: center; font-size: 12px; color: #8A98AE">Secure connection · Kids see everything you see</div>
+<div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; color: #64748B; text-align: center">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.shield }}"></path></svg>Secure connection · Kids see everything you see</div>
+
 </div>
 </div>
 
 <div style="padding: 0 16px 18px; background: #0B0F19">
 <nav aria-label="Main" style="background: #1E294B; border-radius: 16px; padding: 12px; display: flex; gap: 12px">
-<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #60A5FA">Home</span>
-<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Alerts</span>
-<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Family</span>
-<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Settings</span>
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" onClick="{{ t.press }}" aria-current="{{ t.current }}" style="flex: 1 1 0%; min-width: 0; background: none; border: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: {{ t.color }}">
+<span style="width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; background: {{ t.bg }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ t.icon }}"></path></svg></span>{{ t.label }}</button>
+</sc-for>
 </nav>
 </div>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+<div class="toast" role="status" style="position: absolute; left: 50%; bottom: 112px; transform: translateX(-50%); max-width: calc(100% - 32px); box-sizing: border-box; background: #1E294B; border: 1px solid #3B82F6; border-radius: 12px; padding: 12px 20px; font-weight: 700; font-size: 13px; text-align: center; z-index: 30; pointer-events: none">{{ toast }}</div>
+</sc-if>
+
+<sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{ closeSheet }}" style="position: absolute; inset: 0; background: rgba(5,7,13,.72); z-index: 40"></div>
+<div class="sheet" role="dialog" aria-modal="true" aria-label="{{ sheet.title }}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 41; max-height: 86%; overflow-y: auto; box-sizing: border-box; background: #161D30; border-top: 1px solid #1E294B; border-radius: 24px 24px 0 0; padding: 12px 20px 28px">
+<div style="width: 40px; height: 4px; border-radius: 999px; background: #1E294B; margin: 0 auto 18px"></div>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 10px; border: 1px solid currentColor; font-weight: 700; font-size: 12px; white-space: nowrap; color: {{ sheet.color }}; background: {{ sheet.tint }}">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ sheet.icon }}"></path></svg>{{ sheet.tag }}</span>
+<h3 style="margin: 12px 0 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; line-height: 1.3">{{ sheet.title }}</h3>
+<div style="font-size: 12px; color: #64748B; margin-top: 8px">{{ sheet.when }}</div>
+
+<sc-if value="{{ is.leoAlert }}" hint-placeholder-val="{{ false }}">
+<div style="background: #0B0F19; border: 1px solid #1E294B; border-radius: 12px; padding: 14px; margin-top: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase; margin-bottom: 8px">What we saw</div>
+<span style="display: block; font-size: 11px; color: #64748B; font-weight: 700">jake_r</span>
+<span style="display: inline-block; max-width: 100%; background: #1E294B; border-radius: 10px; padding: 8px 12px; font-size: 13px; line-height: 1.45; margin-top: 6px">nobody wants you on the team lol</span>
+<span style="display: block; font-size: 11px; color: #64748B; font-weight: 700; margin-top: 10px">jake_r</span>
+<span style="display: inline-block; max-width: 100%; background: rgba(244,63,94,.2); border: 1px solid #F43F5E; border-radius: 10px; padding: 8px 12px; font-size: 13px; line-height: 1.45; margin-top: 6px">just quit already everyone's asking</span>
+</div>
+<p style="font-size: 12px; line-height: 1.5; color: #64748B; margin: 14px 0 0">Flagged for repeated exclusion language aimed at Leo from the same sender over 3 days. One-off teasing is not flagged.</p>
+<div style="margin-top: 12px; padding: 14px; border-radius: 12px; background: rgba(59,130,246,.2); border: 1px solid #3B82F6; font-size: 13px; line-height: 1.5"><b style="display: block; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #3B82F6; margin-bottom: 6px">SUGGESTED NEXT STEP</b>Skip "who was texting you?" and ask how practice is going lately. Leo hasn't opened this chat since it happened, which usually means it stung.</div>
+</sc-if>
+
+<sc-if value="{{ is.samGrad }}" hint-placeholder-val="{{ false }}">
+<div style="background: #0B0F19; border: 1px solid #1E294B; border-radius: 12px; padding: 14px; margin-top: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase; margin-bottom: 8px">What changes in Coach mode</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Limits</span><span style="font-weight: 700; text-align: right">Sam sets his own</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Your alerts</span><span style="font-weight: 700; text-align: right">Urgent safety only</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 13px"><span style="color: #64748B">Sam sees</span><span style="font-weight: 700; text-align: right">Exactly what you see</span></div>
+</div>
+<div style="margin-top: 12px; padding: 14px; border-radius: 12px; background: rgba(59,130,246,.2); border: 1px solid #3B82F6; font-size: 13px; line-height: 1.5"><b style="display: block; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #3B82F6; margin-bottom: 6px">SUGGESTED NEXT STEP</b>Move up together. Sam gets a say, and he accepts on his own device. Nothing changes until he does.</div>
+</sc-if>
+
+<sc-if value="{{ is.adaTime }}" hint-placeholder-val="{{ false }}">
+<div style="background: #0B0F19; border: 1px solid #1E294B; border-radius: 12px; padding: 14px; margin-top: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase; margin-bottom: 8px">Today so far</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Used</span><span style="font-weight: 700; text-align: right">1h 20m</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Limit</span><span style="font-weight: 700; text-align: right">{{ adaLimit }}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 13px"><span style="color: #64748B">If granted</span><span style="font-weight: 700; text-align: right">{{ adaGranted }}</span></div>
+</div>
+<div style="margin-top: 12px; padding: 14px; border-radius: 12px; background: rgba(59,130,246,.2); border: 1px solid #3B82F6; font-size: 13px; line-height: 1.5"><b style="display: block; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #3B82F6; margin-bottom: 6px">SUGGESTED NEXT STEP</b>Ada is within her limit, so this is a treat rather than a catch-up. Granting it is fine. She will see the extra time on her device.</div>
+</sc-if>
+
+<sc-if value="{{ is.adaTiktok }}" hint-placeholder-val="{{ false }}">
+<div style="background: #0B0F19; border: 1px solid #1E294B; border-radius: 12px; padding: 14px; margin-top: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #64748B; text-transform: uppercase; margin-bottom: 8px">About this app</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Category</span><span style="font-weight: 700; text-align: right">Social video</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #1E294B; font-size: 13px"><span style="color: #64748B">Minimum age</span><span style="font-weight: 700; text-align: right">13+</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 13px"><span style="color: #64748B">Ada's age</span><span style="font-weight: 700; text-align: right; color: #F43F5E">9, below minimum</span></div>
+</div>
+<div style="margin-top: 12px; padding: 14px; border-radius: 12px; background: rgba(59,130,246,.2); border: 1px solid #3B82F6; font-size: 13px; line-height: 1.5"><b style="display: block; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 1px; color: #3B82F6; margin-bottom: 6px">SUGGESTED NEXT STEP</b>TikTok's own minimum age is 13, so we suggest "Not now." Ada will see your answer and the reason. You could point her to YouTube Kids instead.</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px">
+<button type="button" onClick="{{ resolveGo }}" style="height: 48px; border-radius: 12px; border: 0; background: #3B82F6; color: #F8FAFC; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 1px; text-transform: uppercase">{{ sheet.go }}</button>
+<button type="button" onClick="{{ resolveAlt }}" style="height: 44px; border-radius: 8px; border: 1px solid #1E294B; background: #1E294B; font-weight: 700; font-size: 14px">{{ sheet.alt }}</button>
+</div>
+<p style="text-align: center; font-size: 12px; color: #64748B; margin: 14px 0 0">{{ sheet.foot }}</p>
+</div>
+</sc-if>
 
 </div>
 </x-dc>
@@ -157,86 +278,186 @@ button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { kid: 'ada', paused: {}, extra: { leo: 0, sam: 0, ada: 0 } };
+    this.state = { kid: 'ada', paused: {}, extra: { leo: 0, sam: 0, ada: 0 }, resolved: {}, sheet: null, toast: null };
   }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
   fmt(m) {
     const h = Math.floor(m / 60), mm = m % 60;
     return h ? (mm ? h + 'h ' + mm + 'm' : h + 'h') : mm + 'm';
   }
+  showToast(msg, extra) {
+    clearTimeout(this._toastTimer);
+    this.setState(Object.assign({ toast: msg }, extra || {}));
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
   renderVals() {
-    const P = '#3B82F6', G = '#10B981', R = '#F43F5E', S = '#94A3B8';
+    const P = '#3B82F6', G = '#10B981', R = '#F43F5E', M = '#64748B';
+    const tint = (c) => c === P ? 'rgba(59,130,246,.2)' : c === G ? 'rgba(16,185,129,.2)' : c === R ? 'rgba(244,63,94,.2)' : 'rgba(100,116,139,.2)';
+    const I = {
+      shield: 'M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z',
+      compass: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM15.5 8.5l-2 5-5 2 2-5z',
+      users: 'M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M16 3.5a4 4 0 0 1 0 7M22 21v-2a4 4 0 0 0-3-3.85',
+      home: 'M3 11l9-8 9 8M5 9.5V21h6v-6h2v6h6V9.5',
+      bell: 'M18 10a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M10.3 20a2 2 0 0 0 3.4 0',
+      settings: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.2 2.2M16.9 16.9l2.2 2.2M19.1 4.9l-2.2 2.2M7.1 16.9l-2.2 2.2',
+      phone: 'M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2zM11 18h2',
+      tablet: 'M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM11 18h2',
+      pause: 'M9 6v12M15 6v12',
+      play: 'M8 5l11 7-11 7z',
+      alert: 'M12 3L2 20h20zM12 10v4M12 17.5v.01',
+      clockPlus: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM12 8v8M8 12h8',
+      download: 'M12 3v12M6 9l6 6 6-6M4 21h16',
+      cap: 'M2 9l10-5 10 5-10 5zM6 11.5V16c3 2.5 9 2.5 12 0v-4.5',
+      camera: 'M3 8a2 2 0 0 1 2-2h2l2-3h6l2 3h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+      playCircle: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM10 8.5l6 3.5-6 3.5z',
+      game: 'M7 7h10a5 5 0 0 1 5 5v3a3 3 0 0 1-5.5 1.7L15 15H9l-1.5 1.7A3 3 0 0 1 2 15v-3a5 5 0 0 1 5-5zM6 12h4M8 10v4',
+      chat: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
+      globe: 'M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zM2 12h20M12 2c2.5 2.7 4 6.2 4 10s-1.5 7.3-4 10c-2.5-2.7-4-6.2-4-10s1.5-7.3 4-10z',
+      book: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5',
+      chevron: 'M9 5l7 7-7 7',
+      check: 'M4 12l5 5L20 7'
+    };
     const KIDS = {
-      leo: { name: 'Leo', age: 14, mode: 'COACH', badge: 'COACH MODE', color: P, goal: 240, used: 190,
+      leo: { name: 'Leo', age: 14, mode: 'COACH', badge: 'COACH MODE', color: P, icon: 'compass', avatar: P, goal: 240, used: 190,
         s1: ['GOAL STATUS', 'On track'], s2: ['SOCIAL TODAY', '50m'],
         note: 'Leo set this 4h goal himself on Sunday. Social is 18m below his weekly average.',
-        control: 'Extra time is logged and visible to Leo. No silent changes.',
+        secondary: 'Add time', control: 'Extra time is logged and visible to Leo. No silent changes.',
         day: '32m less than yesterday', dayGood: true, week: 1590, weekDelta: '2h 34m less than last week', weekGood: true,
         attTitle: 'Needs Attention',
-        items: [{ color: R, title: 'Possible bullying in Instagram DMs', sub: 'Concern · Leo · 26 min ago' }],
-        apps: [['Instagram', 50, 'iPhone · 12 opens · longest 18m'], ['YouTube', 42, 'iPhone · 6 opens · longest 15m'], ['Minecraft', 35, 'iPhone · 2 opens · longest 25m']],
+        devices: [{ name: "Leo's iPhone", icon: 'phone', time: 190, status: 'active 12m ago' }],
+        apps: [['Instagram', 'camera', 50, 'iPhone · 12 opens · longest 18m'], ['YouTube', 'playCircle', 42, 'iPhone · 6 opens · longest 15m'], ['Minecraft', 'game', 35, 'iPhone · 2 opens · longest 25m']],
         segs: [0,0,1,2,1,0,1,2,3,2,1,2,3,2,1] },
-      sam: { name: 'Sam', age: 12, mode: 'GUIDE', badge: 'GUIDE MODE', color: S, goal: 180, used: 105,
+      sam: { name: 'Sam', age: 12, mode: 'GUIDE', badge: 'GUIDE MODE', color: M, icon: 'users', avatar: '#94A3B8', goal: 180, used: 105,
         s1: ['PLAN STATUS', 'Within plan'], s2: ['PLAN STREAK', '21 days'],
         note: 'Plan agreed together: 3h on school days. Sam has kept it 3 weeks running.',
-        control: 'Sam sees the same plan and streak on his device.',
+        secondary: 'Milestone', control: 'Sam sees the same plan and streak on his device.',
         day: '8m less than yesterday', dayGood: true, week: 1185, weekDelta: '1h 3m less than last week', weekGood: true,
         attTitle: 'Milestone',
-        items: [{ color: P, title: 'Sam looks ready for Coach mode', sub: 'Mode graduation · 21-day streak' }],
-        apps: [['YouTube', 40, 'iPad · 5 opens · longest 14m'], ['Discord', 28, 'iPhone · 9 opens · longest 8m'], ['Duolingo', 22, 'iPhone · 2 opens · longest 15m']],
+        devices: [{ name: "Sam's iPhone", icon: 'phone', time: 70, status: 'active now' }, { name: "Sam's iPad", icon: 'tablet', time: 35, status: 'idle since 2 PM' }],
+        apps: [['YouTube', 'playCircle', 40, 'iPad · 5 opens · longest 14m'], ['Discord', 'chat', 28, 'iPhone · 9 opens · longest 8m'], ['Duolingo', 'globe', 22, 'iPhone · 2 opens · longest 15m']],
         segs: [0,1,1,0,0,1,2,1,1,2,2,1,1,2,0] },
-      ada: { name: 'Ada', age: 9, mode: 'PROTECT', badge: 'PROTECT MODE', color: G, goal: 120, used: 80,
+      ada: { name: 'Ada', age: 9, mode: 'PROTECT', badge: 'PROTECT MODE', color: G, icon: 'shield', avatar: G, goal: 120, used: 80,
         s1: ['LIMIT STATUS', 'Within limit'], s2: ['BLOCKED', '14 sites'],
         note: 'School-day limit set by you: 2h. SafeSearch filtered 14 sites quietly today.',
-        control: 'Ada sees these limits on her device. Nothing hidden.',
+        secondary: 'Edit limits', control: 'Ada sees these limits on her device. Nothing hidden.',
         day: '18m more than yesterday', dayGood: false, week: 665, weekDelta: '1h 24m more than last week', weekGood: false,
         attTitle: 'Waiting for You',
-        items: [{ color: P, title: 'Ada asked for 30 more minutes', sub: 'Time request · 5 min ago' }, { color: P, title: 'Ada asked to install TikTok', sub: 'App request · 12 min ago' }],
-        apps: [['YouTube Kids', 42, 'iPad · 4 opens · longest 16m'], ['Roblox', 35, 'iPad · 3 opens · longest 20m'], ['Khan Academy Kids', 20, 'iPad · 2 opens · longest 12m']],
+        devices: [{ name: "Ada's iPad", icon: 'tablet', time: 80, status: 'active 5m ago' }],
+        apps: [['YouTube Kids', 'playCircle', 42, 'iPad · 4 opens · longest 16m'], ['Roblox', 'game', 35, 'iPad · 3 opens · longest 20m'], ['Khan Academy Kids', 'book', 20, 'iPad · 2 opens · longest 12m']],
         segs: [0,1,2,1,0,0,1,1,2,1,0,1,2,1,0] }
     };
-    const tints = { '#3B82F6': 'rgba(59,130,246,.2)', '#94A3B8': 'rgba(148,163,184,.2)', '#10B981': 'rgba(16,185,129,.2)' };
-    const order = ['leo', 'sam', 'ada'];
-    const id = this.state.kid;
-    const k = KIDS[id];
-    const paused = !!this.state.paused[id];
-    const goal = k.goal + this.state.extra[id];
-    const ratio = Math.min(1, k.used / goal);
-    const ringColor = paused ? S : (k.used / goal > 0.9 ? R : G);
-    const opacity = [0.25, 0.5, 0.75, 1];
-    const maxApp = k.apps[0][1];
+    const ORDER = ['leo', 'sam', 'ada'];
+    const ITEMS = {
+      'leo-alert': { flag: 'leoAlert', icon: 'alert', color: R, title: 'Possible bullying in Instagram DMs', sub: 'Concern · Leo · 26 min ago',
+        doneText: 'Handled · Possible bullying in Instagram DMs', tag: 'CONCERN · CYBERBULLYING', when: 'Today, 8:47 AM · group chat "team practice"',
+        go: 'Mark as handled', alt: 'Not relevant', goOut: 'handled', altOut: 'dismissed',
+        goToast: 'Marked as handled', altToast: 'Noted. Fewer alerts like this', foot: 'Leo can see that this alert was shared with you' },
+      'sam-grad': { flag: 'samGrad', icon: 'cap', color: P, title: 'Sam looks ready for Coach mode', sub: 'Mode graduation · 21-day streak',
+        doneText: 'Proposed · Coach mode. Waiting for Sam to accept', tag: 'MODE GRADUATION', when: 'Based on 3 weeks of keeping the agreed plan',
+        go: 'Propose Coach mode', alt: 'Not yet', goOut: 'proposed', altOut: 'later',
+        goToast: 'Proposed. Sam accepts on his device', altToast: 'Okay. We will check again in a week', foot: 'Moving up a mode is a shared moment, not a surprise' },
+      'ada-time': { flag: 'adaTime', icon: 'clockPlus', color: P, title: 'Ada asked for 30 more minutes', sub: 'Time request · 5 min ago',
+        doneText: 'Granted · 30 extra minutes today', tag: 'REQUEST · MORE TIME', when: "Today, 9:05 AM · from Ada's iPad",
+        go: 'Grant 30 minutes', alt: 'Not today', goOut: 'granted', altOut: 'declined',
+        goToast: 'Granted. Ada got 30 extra minutes today', altToast: 'Declined. Ada can see why', foot: 'Ada will see your decision and why' },
+      'ada-tiktok': { flag: 'adaTiktok', icon: 'download', color: P, title: 'Ada asked to install TikTok', sub: 'App request · 12 min ago',
+        doneText: 'Declined · TikTok. Ada saw your reason', doneAlt: "Approved · TikTok installing on Ada's iPad",
+        tag: 'REQUEST · APP INSTALL', when: "Today, 9:12 AM · from Ada's iPad",
+        go: 'Not now (recommended)', alt: 'Approve anyway', goOut: 'declined', altOut: 'approved',
+        goToast: 'Declined. Ada can see why', altToast: "Approved. TikTok will install on Ada's iPad", foot: 'Ada will see your decision and why' }
+    };
+    const KID_ITEMS = { leo: ['leo-alert'], sam: ['sam-grad'], ada: ['ada-time', 'ada-tiktok'] };
 
-    const chips = order.map((cid) => {
+    const st = this.state;
+    const id = st.kid, k = KIDS[id];
+    const paused = !!st.paused[id];
+    const goal = k.goal + st.extra[id];
+    const ratio = Math.min(1, k.used / goal);
+    const ringColor = paused ? M : (k.used / goal > 0.9 ? R : G);
+    const segOps = [0.15, 0.4, 0.7, 1];
+    const maxApp = k.apps[0][2];
+
+    const chips = ORDER.map((cid) => {
       const c = KIDS[cid], sel = cid === id;
       return {
-        initial: c.name[0], label: c.name + ', ' + c.age, mode: c.mode, color: c.color, selected: sel,
-        border: sel ? '2px solid #3B82F6' : '1px solid #1E294B',
-        nameColor: sel ? '#F8FAFC' : '#8A98AE',
-        modeColor: sel ? c.color : '#8A98AE',
+        initial: c.name[0], label: c.name + ', ' + c.age, mode: c.mode, avatar: c.avatar, pressed: sel ? 'true' : 'false',
+        border: sel ? '2px solid #3B82F6' : '1px solid #1E294B', pad: sel ? '11px' : '12px',
+        nameColor: sel ? '#F8FAFC' : M, modeColor: sel ? c.color : M,
         pick: () => this.setState({ kid: cid })
       };
     });
 
+    const items = KID_ITEMS[id].map((key) => {
+      const it = ITEMS[key], out = st.resolved[key];
+      let doneText = (key === 'ada-tiktok' && out === 'approved') ? it.doneAlt : it.doneText;
+      if (out === 'dismissed') doneText = 'Dismissed · ' + it.title;
+      if (out === 'later') doneText = 'Snoozed · Coach mode check-in next week';
+      if (key === 'ada-time' && out === 'declined') doneText = 'Declined · 30 extra minutes';
+      return {
+        open: !out, done: !!out, doneText, title: it.title, sub: it.sub,
+        icon: I[it.icon], color: it.color, tint: tint(it.color),
+        openSheet: () => this.setState({ sheet: key })
+      };
+    });
+
+    const tabs = [['Home', 'home'], ['Alerts', 'bell'], ['Family', 'users'], ['Settings', 'settings']].map((t, i) => ({
+      label: t[0], icon: I[t[1]], current: i === 0 ? 'page' : 'false',
+      color: i === 0 ? P : M, bg: i === 0 ? 'rgba(59,130,246,.2)' : 'transparent',
+      press: () => { if (i) this.showToast(t[0] + ' is not part of this prototype yet'); }
+    }));
+
+    const sk = st.sheet, s = sk ? ITEMS[sk] : null;
+    const is = { leoAlert: sk === 'leo-alert', samGrad: sk === 'sam-grad', adaTime: sk === 'ada-time', adaTiktok: sk === 'ada-tiktok' };
+    const adaGoal = KIDS.ada.goal + st.extra.ada;
+
+    const resolve = (which) => {
+      const key = this.state.sheet; if (!key) return;
+      const it = ITEMS[key];
+      const resolved = Object.assign({}, this.state.resolved, { [key]: which === 'go' ? it.goOut : it.altOut });
+      const extra = (key === 'ada-time' && which === 'go') ? Object.assign({}, this.state.extra, { ada: this.state.extra.ada + 30 }) : this.state.extra;
+      this.showToast(which === 'go' ? it.goToast : it.altToast, { resolved, extra, sheet: null });
+    };
+
     return {
+      ic: I,
       chips,
+      tabs,
+      toast: st.toast,
       kid: {
-        name: k.name, badge: k.badge, color: k.color, tint: tints[k.color],
+        name: k.name, badge: k.badge, color: k.color, tint: tint(k.color), icon: I[k.icon],
         ringColor, dashOffset: (345.6 * (1 - ratio)).toFixed(1),
         ringLabel: this.fmt(k.used) + ' of ' + this.fmt(goal) + ' used',
         usedText: this.fmt(k.used), goalText: this.fmt(goal),
-        s1k: k.s1[0], s1v: paused ? 'Paused' : k.s1[1], s1color: paused ? '#FDA4AF' : G,
+        s1k: k.s1[0], s1v: paused ? 'Paused' : k.s1[1], s1color: paused ? R : G,
         s2k: k.s2[0], s2v: k.s2[1],
         note: k.note, control: k.control, paused,
-        pauseLabel: paused ? 'RESUME DEVICES' : 'PAUSE DEVICES',
-        pauseBg: paused ? 'transparent' : '#F43F5E',
-        pauseFg: paused ? '#FDA4AF' : '#F8FAFC',
-        day: k.day, dayColor: k.dayGood ? G : '#8A98AE',
-        weekText: this.fmt(k.week), weekDelta: k.weekDelta, weekColor: k.weekGood ? G : '#8A98AE',
-        attTitle: k.attTitle, items: k.items,
-        bars: k.segs.map((v) => ({ h: (28 + v * 24) + '%', o: opacity[v] })),
-        apps: k.apps.map((a) => ({ name: a[0], time: this.fmt(a[1]), meta: a[2], pct: Math.round(a[1] / maxApp * 100) + '%' }))
+        pauseLabel: paused ? 'RESUME DEVICES' : 'PAUSE DEVICES', pauseIcon: I[paused ? 'play' : 'pause'],
+        pauseBg: paused ? 'transparent' : R, pauseFg: paused ? R : '#F8FAFC',
+        pauseFlex: id === 'leo' ? '1 1 0%' : 'none',
+        secondary: k.secondary, secDisplay: id === 'leo' ? 'none' : 'block',
+        day: k.day, dayColor: k.dayGood ? G : M,
+        weekText: this.fmt(k.week), weekDelta: k.weekDelta, weekColor: k.weekGood ? G : M,
+        attTitle: k.attTitle, items,
+        devices: k.devices.map((d) => ({ name: d.name, icon: I[d.icon], line: this.fmt(d.time) + ' · ' + d.status })),
+        bars: k.segs.map((v) => ({ h: (28 + v * 24) + '%', o: segOps[v] })),
+        apps: k.apps.map((a, i) => ({ name: a[0], icon: I[a[1]], time: this.fmt(a[2]), meta: a[3],
+          pct: Math.round(a[2] / maxApp * 100) + '%', border: i === k.apps.length - 1 ? '0' : '1px solid #1E294B' }))
       },
-      extend: () => this.setState({ extra: { ...this.state.extra, [id]: this.state.extra[id] + 30 } }),
-      togglePause: () => this.setState({ paused: { ...this.state.paused, [id]: !paused } })
+      sheetOpen: !!s,
+      sheet: s ? { title: s.title, tag: s.tag, when: s.when, color: s.color, tint: tint(s.color), icon: I[s.icon], go: s.go, alt: s.alt, foot: s.foot } : {},
+      is,
+      adaLimit: this.fmt(adaGoal),
+      adaGranted: this.fmt(adaGoal + 30),
+      closeSheet: () => this.setState({ sheet: null }),
+      resolveGo: () => resolve('go'),
+      resolveAlt: () => resolve('alt'),
+      extend: () => this.showToast('30 minutes added. Logged and visible to ' + k.name,
+        { extra: Object.assign({}, st.extra, { [id]: st.extra[id] + 30 }) }),
+      togglePause: () => this.showToast(paused ? k.name + "'s devices resumed" : k.name + "'s devices paused. " + k.name + ' was notified',
+        { paused: Object.assign({}, st.paused, { [id]: !paused }) }),
+      secondary: () => this.showToast(k.secondary + ' is not part of this prototype yet'),
+      viewAll: () => this.showToast('The full inbox is not part of this prototype yet'),
+      weekly: () => this.showToast('The weekly summary is not part of this prototype yet')
     };
   }
 }
