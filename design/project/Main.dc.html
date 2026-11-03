@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Haloo parent dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800;900&family=Geist:wght@400;500;700&family=Geist+Mono:wght@700&display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
+.scroll{scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="width: 402px; height: 874px; box-sizing: border-box; background: #0B0F19; color: #F8FAFC; font-family: 'Geist', system-ui, sans-serif; font-size: 14px; display: flex; flex-direction: column; overflow: hidden">
+
+<div class="scroll" style="flex-grow: 1; min-height: 0; overflow-y: auto">
+<div style="padding: 48px 16px 12px; display: flex; flex-direction: column; gap: 24px">
+
+<div>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Tuesday, Jul 28</div>
+<h1 style="margin: 8px 0 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.25">Good morning, Maya</h1>
+</div>
+
+<div style="display: flex; gap: 10px">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="3">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.selected }}" style="flex-grow: 1; flex-basis: 0; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 12px 10px; border-radius: 12px; background: #1E294B; color: inherit; text-align: left; border: {{ c.border }}">
+<span style="width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: {{ c.color }}; color: #0B0F19; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 12px">{{ c.initial }}</span>
+<span style="min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-weight: 700; font-size: 13px; white-space: nowrap; color: {{ c.nameColor }}">{{ c.label }}</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 1px; color: {{ c.modeColor }}">{{ c.mode }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Screen time status</span>
+<span style="padding: 6px 10px; border-radius: 10px; border: 1px solid {{ kid.color }}; color: {{ kid.color }}; background: {{ kid.tint }}; font-weight: 700; font-size: 11px; white-space: nowrap">{{ kid.badge }}</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 20px">
+<div style="position: relative; width: 128px; height: 128px; flex-shrink: 0">
+<svg width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="{{ kid.ringLabel }}">
+<circle cx="64" cy="64" r="55" stroke="#0B0F19" stroke-width="10" fill="none"/>
+<circle cx="64" cy="64" r="55" stroke="{{ kid.ringColor }}" stroke-width="10" fill="none" stroke-dasharray="345.6" stroke-dashoffset="{{ kid.dashOffset }}" stroke-linecap="round" transform="rotate(-90 64 64)"/>
+</svg>
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 20px">{{ kid.usedText }}</span>
+<span style="font-size: 12px; color: #8A98AE; margin-top: 4px">of {{ kid.goalText }}</span>
+</div>
+</div>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #8A98AE">{{ kid.s1k }}</div>
+<div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 16px; margin-top: 4px; color: {{ kid.s1color }}">{{ kid.s1v }}</div>
+</div>
+<div>
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: #8A98AE">{{ kid.s2k }}</div>
+<div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 16px; margin-top: 4px">{{ kid.s2v }}</div>
+</div>
+</div>
+</div>
+
+<p style="margin: 0; font-size: 12px; line-height: 1.5; color: #8A98AE">{{ kid.note }}</p>
+
+<sc-if value="{{ kid.paused }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 10px 12px; border-radius: 10px; background: rgba(244,63,94,.2); border: 1px solid #F43F5E; color: #FDA4AF; font-weight: 700; font-size: 13px; line-height: 1.35">Devices paused. {{ kid.name }} can see this on screen</div>
+</sc-if>
+
+<button type="button" onClick="{{ extend }}" style="width: 100%; height: 56px; border-radius: 12px; border: 0; background: #10B981; color: #0B0F19; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 1px; text-transform: uppercase">Extend time +30m</button>
+
+<button type="button" onClick="{{ togglePause }}" style="width: 100%; height: 48px; border-radius: 12px; border: 1.5px solid #F43F5E; background: {{ kid.pauseBg }}; color: {{ kid.pauseFg }}; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 1px">{{ kid.pauseLabel }}</button>
+
+<p style="margin: 0; font-size: 12px; line-height: 1.5; color: #8A98AE">{{ kid.control }}</p>
+</div>
+
+<div style="display: flex; gap: 10px">
+<div style="flex-grow: 1; flex-basis: 0; min-width: 0; background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Today</div>
+<div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 22px; margin-top: 8px; white-space: nowrap">{{ kid.usedText }}</div>
+<div style="font-size: 12px; font-weight: 700; margin-top: 4px; line-height: 1.4; color: {{ kid.dayColor }}">{{ kid.day }}</div>
+</div>
+<div style="flex-grow: 1; flex-basis: 0; min-width: 0; background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
+<div style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">This week</div>
+<div style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 22px; margin-top: 8px; white-space: nowrap">{{ kid.weekText }}</div>
+<div style="font-size: 12px; font-weight: 700; margin-top: 4px; line-height: 1.4; color: {{ kid.weekColor }}">{{ kid.weekDelta }}</div>
+</div>
+</div>
+
+<div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 16px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8A98AE">Today's timeline</span>
+<span style="font-size: 12px; color: #8A98AE">screen use by hour</span>
+</div>
+<div style="display: flex; gap: 3px; margin-top: 12px; height: 34px; align-items: flex-end">
+<sc-for list="{{kid.bars}}" as="b" hint-placeholder-count="15">
+<div style="flex-grow: 1; flex-basis: 0; border-radius: 3px; background: #3B82F6; height: {{ b.h }}; opacity: {{ b.o }}"></div>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 11px; color: #8A98AE; margin-top: 8px"><span>7 AM</span><span>12 PM</span><span>4 PM</span><span>9 PM</span></div>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">{{ kid.attTitle }}</h2>
+<sc-for list="{{kid.items}}" as="it" hint-placeholder-count="1">
+<a href="Alert.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #1E294B; border: 1px solid #1E294B; border-radius: 16px; text-decoration: none; color: inherit">
+<span style="width: 10px; height: 10px; border-radius: 999px; flex-shrink: 0; background: {{ it.color }}"></span>
+<span style="min-width: 0; flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-weight: 700; font-size: 14px; line-height: 1.35">{{ it.title }}</span>
+<span style="font-size: 12px; color: #8A98AE">{{ it.sub }}</span>
+</span>
+<span style="color: #8A98AE; font-size: 16px" aria-hidden="true">›</span>
+</a>
+</sc-for>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 1px">Top App Usage</h2>
+<div style="background: #161D30; border: 1px solid #1E294B; border-radius: 16px; padding: 4px 16px">
+<sc-for list="{{kid.apps}}" as="a" hint-placeholder-count="3">
+<div style="padding: 14px 0; border-bottom: 1px solid #1E294B">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<span style="font-weight: 700; font-size: 14px">{{ a.name }}</span>
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 13px">{{ a.time }}</span>
+</div>
+<div style="font-size: 12px; color: #8A98AE; margin-top: 2px">{{ a.meta }}</div>
+<div style="height: 6px; border-radius: 999px; background: #1E294B; margin-top: 8px; overflow: hidden"><div style="height: 100%; border-radius: 999px; background: #3B82F6; width: {{ a.pct }}"></div></div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<div style="text-align: center; font-size: 12px; color: #8A98AE">Secure connection · Kids see everything you see</div>
+</div>
+</div>
+
+<div style="padding: 0 16px 18px; background: #0B0F19">
+<nav aria-label="Main" style="background: #1E294B; border-radius: 16px; padding: 12px; display: flex; gap: 12px">
+<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #60A5FA">Home</span>
+<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Alerts</span>
+<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Family</span>
+<span style="flex-grow: 1; flex-basis: 0; text-align: center; font-size: 11px; font-weight: 700; color: #8A98AE">Settings</span>
+</nav>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":402,"height":874}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { kid: 'ada', paused: {}, extra: { leo: 0, sam: 0, ada: 0 } };
+  }
+  fmt(m) {
+    const h = Math.floor(m / 60), mm = m % 60;
+    return h ? (mm ? h + 'h ' + mm + 'm' : h + 'h') : mm + 'm';
+  }
+  renderVals() {
+    const P = '#3B82F6', G = '#10B981', R = '#F43F5E', S = '#94A3B8';
+    const KIDS = {
+      leo: { name: 'Leo', age: 14, mode: 'COACH', badge: 'COACH MODE', color: P, goal: 240, used: 190,
+        s1: ['GOAL STATUS', 'On track'], s2: ['SOCIAL TODAY', '50m'],
+        note: 'Leo set this 4h goal himself on Sunday. Social is 18m below his weekly average.',
+        control: 'Extra time is logged and visible to Leo. No silent changes.',
+        day: '32m less than yesterday', dayGood: true, week: 1590, weekDelta: '2h 34m less than last week', weekGood: true,
+        attTitle: 'Needs Attention',
+        items: [{ color: R, title: 'Possible bullying in Instagram DMs', sub: 'Concern · Leo · 26 min ago' }],
+        apps: [['Instagram', 50, 'iPhone · 12 opens · longest 18m'], ['YouTube', 42, 'iPhone · 6 opens · longest 15m'], ['Minecraft', 35, 'iPhone · 2 opens · longest 25m']],
+        segs: [0,0,1,2,1,0,1,2,3,2,1,2,3,2,1] },
+      sam: { name: 'Sam', age: 12, mode: 'GUIDE', badge: 'GUIDE MODE', color: S, goal: 180, used: 105,
+        s1: ['PLAN STATUS', 'Within plan'], s2: ['PLAN STREAK', '21 days'],
+        note: 'Plan agreed together: 3h on school days. Sam has kept it 3 weeks running.',
+        control: 'Sam sees the same plan and streak on his device.',
+        day: '8m less than yesterday', dayGood: true, week: 1185, weekDelta: '1h 3m less than last week', weekGood: true,
+        attTitle: 'Milestone',
+        items: [{ color: P, title: 'Sam looks ready for Coach mode', sub: 'Mode graduation · 21-day streak' }],
+        apps: [['YouTube', 40, 'iPad · 5 opens · longest 14m'], ['Discord', 28, 'iPhone · 9 opens · longest 8m'], ['Duolingo', 22, 'iPhone · 2 opens · longest 15m']],
+        segs: [0,1,1,0,0,1,2,1,1,2,2,1,1,2,0] },
+      ada: { name: 'Ada', age: 9, mode: 'PROTECT', badge: 'PROTECT MODE', color: G, goal: 120, used: 80,
+        s1: ['LIMIT STATUS', 'Within limit'], s2: ['BLOCKED', '14 sites'],
+        note: 'School-day limit set by you: 2h. SafeSearch filtered 14 sites quietly today.',
+        control: 'Ada sees these limits on her device. Nothing hidden.',
+        day: '18m more than yesterday', dayGood: false, week: 665, weekDelta: '1h 24m more than last week', weekGood: false,
+        attTitle: 'Waiting for You',
+        items: [{ color: P, title: 'Ada asked for 30 more minutes', sub: 'Time request · 5 min ago' }, { color: P, title: 'Ada asked to install TikTok', sub: 'App request · 12 min ago' }],
+        apps: [['YouTube Kids', 42, 'iPad · 4 opens · longest 16m'], ['Roblox', 35, 'iPad · 3 opens · longest 20m'], ['Khan Academy Kids', 20, 'iPad · 2 opens · longest 12m']],
+        segs: [0,1,2,1,0,0,1,1,2,1,0,1,2,1,0] }
+    };
+    const tints = { '#3B82F6': 'rgba(59,130,246,.2)', '#94A3B8': 'rgba(148,163,184,.2)', '#10B981': 'rgba(16,185,129,.2)' };
+    const order = ['leo', 'sam', 'ada'];
+    const id = this.state.kid;
+    const k = KIDS[id];
+    const paused = !!this.state.paused[id];
+    const goal = k.goal + this.state.extra[id];
+    const ratio = Math.min(1, k.used / goal);
+    const ringColor = paused ? S : (k.used / goal > 0.9 ? R : G);
+    const opacity = [0.25, 0.5, 0.75, 1];
+    const maxApp = k.apps[0][1];
+
+    const chips = order.map((cid) => {
+      const c = KIDS[cid], sel = cid === id;
+      return {
+        initial: c.name[0], label: c.name + ', ' + c.age, mode: c.mode, color: c.color, selected: sel,
+        border: sel ? '2px solid #3B82F6' : '1px solid #1E294B',
+        nameColor: sel ? '#F8FAFC' : '#8A98AE',
+        modeColor: sel ? c.color : '#8A98AE',
+        pick: () => this.setState({ kid: cid })
+      };
+    });
+
+    return {
+      chips,
+      kid: {
+        name: k.name, badge: k.badge, color: k.color, tint: tints[k.color],
+        ringColor, dashOffset: (345.6 * (1 - ratio)).toFixed(1),
+        ringLabel: this.fmt(k.used) + ' of ' + this.fmt(goal) + ' used',
+        usedText: this.fmt(k.used), goalText: this.fmt(goal),
+        s1k: k.s1[0], s1v: paused ? 'Paused' : k.s1[1], s1color: paused ? '#FDA4AF' : G,
+        s2k: k.s2[0], s2v: k.s2[1],
+        note: k.note, control: k.control, paused,
+        pauseLabel: paused ? 'RESUME DEVICES' : 'PAUSE DEVICES',
+        pauseBg: paused ? 'transparent' : '#F43F5E',
+        pauseFg: paused ? '#FDA4AF' : '#F8FAFC',
+        day: k.day, dayColor: k.dayGood ? G : '#8A98AE',
+        weekText: this.fmt(k.week), weekDelta: k.weekDelta, weekColor: k.weekGood ? G : '#8A98AE',
+        attTitle: k.attTitle, items: k.items,
+        bars: k.segs.map((v) => ({ h: (28 + v * 24) + '%', o: opacity[v] })),
+        apps: k.apps.map((a) => ({ name: a[0], time: this.fmt(a[1]), meta: a[2], pct: Math.round(a[1] / maxApp * 100) + '%' }))
+      },
+      extend: () => this.setState({ extra: { ...this.state.extra, [id]: this.state.extra[id] + 30 } }),
+      togglePause: () => this.setState({ paused: { ...this.state.paused, [id]: !paused } })
+    };
+  }
+}
+</script>
+</body>
+</html>

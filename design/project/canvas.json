@@ -1,0 +1,16 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-03T23:40:00Z" },
+  "title": "Haloo Dashboard Design",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 402, "h": 874, "title": "Parent dashboard", "is_interactive": true, "radius": 36 },
+    "Alert.dc.html": { "x": 482, "y": 0, "w": 402, "h": 874, "title": "Alert detail sheet", "radius": 36 }
+  },
+  "order": ["Main.dc.html", "Alert.dc.html"],
+  "notes": {
+    "t1": { "x": 0, "y": -200, "text": "Haloo parent dashboard", "kind": "title1", "maxW": 884 }
+  },
+  "designSystems": []
+}
