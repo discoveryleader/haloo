@@ -10,3 +10,4 @@ Haloo is a family digital-wellbeing product that shifts from protection toward s
 ## Design
 
 - [`design/`](design/) — source files for the Haloo parent dashboard design canvas (`design/project/`), based on the [Haloo Dashboard artifact](https://claude.ai/artifact/NnKpgdxv885PNmSFWPFhtx). Published as a [Claude Design](https://claude.ai/artifact/CU8L4wvHJLuJN2oD777ABs) (private until shared).
+- [`design-activity/`](design-activity/) — source for the Haloo activity detail design (Ada, Protect mode), recreated from the [Figma frame](https://www.figma.com/design/bnTc7gVQSEiZhCg8dXI02s/Haloo?node-id=6203-37). Published as a [Claude Design](https://claude.ai/artifact/NaV7H71WjsqjRNeGxGnCz3) (private until shared).
